@@ -33,10 +33,6 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
         run();
-        items.add(userLoginInfoResponse.data.get(0).getname());
-        /*for(UserLoginInfo u : userLoginInfoResponse.data){
-            items.add(u.toString());
-        }*/
     }
 
     public void run() {
@@ -44,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("https://www.s3-sa-east-1.amazonaws.com")
+                .baseUrl("http://s3-sa-east-1.amazonaws.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -53,14 +49,17 @@ public class MainActivity extends AppCompatActivity {
         Call<UserLoginInfoResponse> call = service.getJson();
         call.enqueue(new Callback<UserLoginInfoResponse>() {
             @Override
-            public void onResponse(Response response, Retrofit retrofit) {
-                userLoginInfoResponse = userLoginInfoResponse.parseJSON(response.body().toString());
-                System.out.println("Hello");
+            public void onResponse(Response<UserLoginInfoResponse> response, Retrofit retrofit) {
+                userLoginInfoResponse = response.body();
+                System.out.println("onResponse");
+                for(UserLoginInfo u : userLoginInfoResponse.data){
+                    items.add(u.toString());
+                }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println("Failure");
+                System.out.println("onFailure");
                 finish();
             }
         });
