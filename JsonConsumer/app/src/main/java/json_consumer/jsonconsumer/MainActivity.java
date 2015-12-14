@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("https://s3-sa-east-1.amazonaws.com")
+                .baseUrl("https://www.s3-sa-east-1.amazonaws.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -61,8 +61,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable t) {
                 System.out.println("Failure");
+                finish();
             }
-        });System.out.println("Hello");
+        });
+
     }
 
 }
